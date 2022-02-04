@@ -13,7 +13,7 @@ var ArticleSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   tagList: [{ type: String }],
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-}, {timestamps: true});
+}, {timestamps: true, usePushEach: true});
 
 ArticleSchema.plugin(uniqueValidator, {message: 'is already taken'});
 
@@ -51,7 +51,7 @@ ArticleSchema.methods.toJSONFor = function(user){
     favorited: user ? user.isFavorite(this._id) : false,
     favoritesCount: this.favoritesCount,
     author: this.author.toProfileJSONFor(user),
-    image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'
+    image: this.image ? this.image : 'https://static.productionready.io/images/smiley-cyrus.jpg'
   };
 };
 
